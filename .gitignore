@@ -1,0 +1,10 @@
+.vs/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+glad/
+glfw-3.3.2.bin.WIN64/
+glm/
+x64/
