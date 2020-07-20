@@ -37,6 +37,8 @@ Mesh::Mesh(float* vertices, int vertSize, unsigned int* indices, int indiSize)
 	glGenVertexArrays(1, &vaoId);
 	glGenBuffers(1, &vboId);
 	glGenBuffers(1, &eboId);
+	
+	glBindVertexArray(vaoId);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 	glBufferData(GL_ARRAY_BUFFER, vertSize * sizeof(float), &vertices[0], GL_STATIC_DRAW);
@@ -44,7 +46,6 @@ Mesh::Mesh(float* vertices, int vertSize, unsigned int* indices, int indiSize)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboId);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indiSize * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
-	glBindVertexArray(vaoId);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 
@@ -65,7 +66,7 @@ Mesh::~Mesh()
 		delete[] indices;
 	}
 
-	delete[] vertices;
+	// delete[] vertices;
 }
 
 void Mesh::render()
