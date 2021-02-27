@@ -4,7 +4,7 @@
 #include "Mesh.h"
 #include "light.h"
 
-#include <gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 
 GameObject::GameObject(Mesh* mesh, Shader* shader)

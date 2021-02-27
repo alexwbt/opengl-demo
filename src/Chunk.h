@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 
 class Shader;

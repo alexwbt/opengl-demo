@@ -2,7 +2,7 @@
 #include "Camera.h"
 #include "Window.h"
 
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
 
 
 Camera* Input::camera;
