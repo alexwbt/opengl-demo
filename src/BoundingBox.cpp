@@ -1,10 +1,6 @@
-#include "BoundingBox.h"
-#include "Mesh.h"
+#include "pch.h"
 
-#include <glad/glad.h>
-
-
-float* cube_vertices = new float[48] {
+const std::vector<float> cube_vertices = {
     // front
     -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f,
      1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f,
@@ -17,7 +13,7 @@ float* cube_vertices = new float[48] {
     -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f
 };
 
-unsigned int* cube_elements = new unsigned int[36] {
+const std::vector<uint32_t> cube_indices {
 	// front
 	0, 1, 2,
 	2, 3, 0,
@@ -42,7 +38,7 @@ unsigned int* cube_elements = new unsigned int[36] {
 BoundingBox::BoundingBox(float x, float y, float z, float scale, Shader* shader)
 	: GameObject(shader)
 {
-    setMesh(new Mesh(cube_vertices, 8, cube_elements, 36));
+    setMesh(new Mesh(cube_vertices, cube_indices));
 }
 
 void BoundingBox::render(Camera* camera, glm::mat4 pv)

@@ -113,6 +113,7 @@
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\Texture.h" />

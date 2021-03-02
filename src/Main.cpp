@@ -1,21 +1,4 @@
-#include "Window.h"
-#include "Shader.h"
-#include "Mesh.h"
-#include "Camera.h"
-#include "Input.h"
-#include "Texture.h"
-#include "GameObject.h"
-#include "Chunk.h"
-#include "Light.h"
-#include "BoundingBox.h"
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <glm/gtc/matrix_transform.hpp>
-
-#include <iostream>
-
+#include "pch.h"
 
 int main()
 {
@@ -75,7 +58,7 @@ int main()
     int fps = 0;
     while (!glfwWindowShouldClose(Window::window))
     {
-        float now = glfwGetTime();
+        float now = (float)glfwGetTime();
         deltaTime = now - lastTime;
         lastTime = now;
 

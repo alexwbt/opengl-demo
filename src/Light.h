@@ -1,11 +1,5 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <vector>
-
-
-class Shader;
-
 enum class LightType {
 	SUN, POINT, SPOT
 };

@@ -1,23 +1,27 @@
 #pragma once
 
-
-class Mesh
+class Mesh final
 {
 public:
-	Mesh(float* vertices, int vertSize);
-	Mesh(float* vertices, int vertSize, unsigned int* indices, int indiSize);
+	Mesh(const std::vector<float> vertices);
+	Mesh(const std::vector<float> vertices, const std::vector<uint32_t> indices);
 	~Mesh();
 
 	void render();
 private:
-	unsigned int vaoId, vboId, eboId;
+	enum class Type
+	{
+		kVertex,
+		kElement
+	};
 
-	int type;
+	Type type_;
 
-	int vertSize;
-	float* vertices;
+	GLuint vao_id_;
+	GLuint vbo_id_;
+	GLuint ebo_id_ = 0;
 
-	int indiSize;
-	unsigned int* indices;
+	GLsizei vertices_size_;
+	GLsizei indices_size_ = 0;
 };
 

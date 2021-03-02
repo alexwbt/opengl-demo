@@ -1,11 +1,7 @@
-#include "Texture.h"
+#include "pch.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
-#include <glad/glad.h>
-#include <iostream>
-
 
 unsigned int Texture::loadTexture(const char* path, int type)
 {

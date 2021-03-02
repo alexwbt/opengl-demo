@@ -1,9 +1,4 @@
-#include "File.h"
-
-#include <iostream>
-#include <fstream>
-#include <string>
-
+#include "pch.h"
 
 std::string File::readFile(const char* path)
 {

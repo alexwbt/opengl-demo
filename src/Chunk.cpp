@@ -1,9 +1,4 @@
-#include "Chunk.h"
-#include "Mesh.h"
-
-#include <vector>
-#include <iostream>
-
+#include "pch.h"
 
 const int Chunk::SIZE;
 
@@ -114,5 +109,5 @@ Chunk::Chunk(Shader* shader)
 		}
 	}
 	
-	setMesh(new Mesh(vertices.data(), vertices.size()));
+	setMesh(new Mesh(vertices));
 }

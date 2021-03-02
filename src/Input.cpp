@@ -1,9 +1,4 @@
-#include "Input.h"
-#include "Camera.h"
-#include "Window.h"
-
-#include <GLFW/glfw3.h>
-
+#include "pch.h"
 
 Camera* Input::camera;
 float Input::cameraSpeed, Input::mouseSens;
@@ -32,8 +27,8 @@ void Input::mouseInput(GLFWwindow* window, double x, double y)
 		mouse = glm::vec2(x, y);
 	}
 
-	camera->yaw += (x - mouse.x) * mouseSens;
-	camera->pitch += (mouse.y - y) * mouseSens;
+	camera->yaw += ((float)x - mouse.x) * mouseSens;
+	camera->pitch += (mouse.y - (float)y) * mouseSens;
 	mouse = glm::vec2(x, y);
 
 	if (camera->pitch > 89.0f)
@@ -46,7 +41,6 @@ void Input::mouseWheelInput(GLFWwindow* window, double x, double y)
 {
 
 }
-
 
 void Input::setCamera(Camera* camera, float speed, float mouseSens)
 {

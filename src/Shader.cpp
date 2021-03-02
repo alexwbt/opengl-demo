@@ -1,9 +1,4 @@
-#include "Shader.h"
-#include "File.h"
-
-#include <glad/glad.h>
-#include <iostream>
-
+#include "pch.h"
 
 Shader::Shader(const char** paths, int* types, int size)
 {

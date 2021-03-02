@@ -1,8 +1,4 @@
-#include "Light.h"
-#include "Shader.h"
-
-#include <string>
-
+#include "pch.h"
 
 std::vector<Light*> Light::lights;
 

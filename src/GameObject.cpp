@@ -1,11 +1,4 @@
-#include "GameObject.h"
-#include "Shader.h"
-#include "Camera.h"
-#include "Mesh.h"
-#include "light.h"
-
-#include <glm/gtc/matrix_transform.hpp>
-
+#include "pch.h"
 
 GameObject::GameObject(Mesh* mesh, Shader* shader)
 {

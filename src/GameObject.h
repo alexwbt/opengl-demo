@@ -1,12 +1,5 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
-
-class Camera;
-class Shader;
-class Mesh;
-
 class GameObject
 {
 public:
@@ -14,7 +7,7 @@ public:
 
 	GameObject(Mesh* mesh, Shader* shader);
 	GameObject(Shader* shader);
-	~GameObject();
+	virtual ~GameObject();
 
 	void setMesh(Mesh* mesh);
 

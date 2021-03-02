@@ -1,9 +1,4 @@
-#include "Window.h"
-
-#include <GLFW/glfw3.h>
-
-#include <iostream>
-
+#include "pch.h"
 
 GLFWwindow* Window::window;
 int Window::width, Window::height;

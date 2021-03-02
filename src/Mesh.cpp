@@ -1,21 +1,15 @@
-#include "Mesh.h"
+#include "pch.h"
 
-#include <glad/glad.h>
-
-
-Mesh::Mesh(float* vertices, int vertSize)
+Mesh::Mesh(const std::vector<float> vertices)
+	: type_(Type::kVertex), vertices_size_((GLsizei)vertices.size())
 {
-	type = 1;
-	this->vertices = vertices;
-	this->vertSize = vertSize;
+	glGenVertexArrays(1, &vao_id_);
+	glGenBuffers(1, &vbo_id_);
 
-	glGenVertexArrays(1, &vaoId);
-	glGenBuffers(1, &vboId);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id_);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vboId);
-	glBufferData(GL_ARRAY_BUFFER, vertSize * sizeof(float), &vertices[0], GL_STATIC_DRAW);
-	
-	glBindVertexArray(vaoId);
+	glBindVertexArray(vao_id_);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 
@@ -26,25 +20,20 @@ Mesh::Mesh(float* vertices, int vertSize)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 }
 
-Mesh::Mesh(float* vertices, int vertSize, unsigned int* indices, int indiSize)
+Mesh::Mesh(const std::vector<float> vertices, const std::vector<uint32_t> indices)
+	: type_(Type::kElement), vertices_size_((GLsizei)vertices.size()), indices_size_((GLsizei)indices.size())
 {
-	type = 2;
-	this->vertices = vertices;
-	this->vertSize = vertSize;
-	this->indices = indices;
-	this->indiSize = indiSize;
-
-	glGenVertexArrays(1, &vaoId);
-	glGenBuffers(1, &vboId);
-	glGenBuffers(1, &eboId);
+	glGenVertexArrays(1, &vao_id_);
+	glGenBuffers(1, &vbo_id_);
+	glGenBuffers(1, &ebo_id_);
 	
-	glBindVertexArray(vaoId);
+	glBindVertexArray(vao_id_);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vboId);
-	glBufferData(GL_ARRAY_BUFFER, vertSize * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id_);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboId);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indiSize * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id_);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
@@ -57,27 +46,23 @@ Mesh::Mesh(float* vertices, int vertSize, unsigned int* indices, int indiSize)
 
 Mesh::~Mesh()
 {
-	glDeleteVertexArrays(1, &vaoId);
-	glDeleteBuffers(1, &vboId);
+	glDeleteVertexArrays(1, &vao_id_);
+	glDeleteBuffers(1, &vbo_id_);
 
-	if (type == 2)
-	{
-		glDeleteBuffers(1, &eboId);
-		delete[] indices;
-	}
-
-	// delete[] vertices;
+	if (type_ == Type::kElement)
+		glDeleteBuffers(1, &ebo_id_);
 }
 
 void Mesh::render()
 {
-	glBindVertexArray(vaoId);
-	switch (type)
+	glBindVertexArray(vao_id_);
+	switch (type_)
 	{
-	case 1:
-		glDrawArrays(GL_TRIANGLES, 0, vertSize);
+	case Type::kVertex:
+		glDrawArrays(GL_TRIANGLES, 0, vertices_size_);
 		break;
-	case 2:
-		glDrawElements(GL_TRIANGLES, indiSize, GL_UNSIGNED_INT, 0);
+	case Type::kElement:
+		glDrawElements(GL_TRIANGLES, indices_size_ , GL_UNSIGNED_INT, 0);
+		break;
 	}
 }

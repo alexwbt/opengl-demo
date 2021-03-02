@@ -1,8 +1,5 @@
 #pragma once
 
-#include "GameObject.h"
-
-
 class BoundingBox : public GameObject
 {
 public:
@@ -10,4 +7,3 @@ public:
 
 	void render(Camera* camera, glm::mat4 pv) override;
 };
-
