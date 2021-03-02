@@ -1,13 +1,18 @@
 #pragma once
 
-class Window
+class Window final
 {
 public:
-	static GLFWwindow* window;
-	static int initWindow(const char* title, int width, int height);
+	Window(const char* title, int width, int height);
 
-	static int width, height;
+	void GetSize();
+
+	int width() const;
+	int height() const;
+	GLFWwindow* window() const;
+
 private:
-	static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+	GLFWwindow* window_;
+	int width_, height_;
 };
 

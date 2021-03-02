@@ -2,12 +2,6 @@
 
 class Mesh final
 {
-public:
-	Mesh(const std::vector<float> vertices);
-	Mesh(const std::vector<float> vertices, const std::vector<uint32_t> indices);
-	~Mesh();
-
-	void render();
 private:
 	enum class Type
 	{
@@ -23,5 +17,12 @@ private:
 
 	GLsizei vertices_size_;
 	GLsizei indices_size_ = 0;
+
+public:
+	Mesh(const std::vector<float> vertices);
+	Mesh(const std::vector<float> vertices, const std::vector<uint32_t> indices);
+	~Mesh();
+
+	void Render();
 };
 

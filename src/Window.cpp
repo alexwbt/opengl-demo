@@ -1,35 +1,45 @@
 #include "pch.h"
 
-GLFWwindow* Window::window;
-int Window::width, Window::height;
-
-int Window::initWindow(const char* title, int width, int height)
+void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
-	Window::width = width;
-	Window::height = height;
+	glViewport(0, 0, width, height);
+}
 
+Window::Window(const char* title, int width, int height)
+	: width_(width), height_(height)
+{
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(width, height, title, NULL, NULL);
-	if (window == NULL)
+	window_ = glfwCreateWindow(width, height, title, NULL, NULL);
+	if (!window_)
 	{
-		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
-		return -1;
+		throw std::runtime_error("Failed to create glfw window.");
 	}
 
-	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
-
-	return 0;
+	glfwMakeContextCurrent(window_);
+	glfwSetFramebufferSizeCallback(window_, FramebufferSizeCallback);
 }
 
-void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
+void Window::GetSize()
 {
-	glViewport(0, 0, width, height);
-	Window::width = width;
-	Window::height = height;
+	glfwGetWindowSize(window_, &width_, &height_);
+}
+
+int Window::width() const
+{
+	return width_;
+}
+
+int Window::height() const
+{
+	return height_;
+}
+
+GLFWwindow* Window::window() const
+{
+	return window_;
 }

@@ -55,6 +55,6 @@ void GameObject::render(Camera* camera, glm::mat4 pv)
 		shader->setMat4("mvp", pv * model);
 		shader->setMat4("model", model);
 
-		mesh->render();
+		mesh->Render();
 	}
 }

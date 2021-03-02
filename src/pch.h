@@ -1,10 +1,14 @@
 #pragma once
 
+#include <chrono>
 #include <iostream>
 #include <vector>
 #include <stdint.h>
 #include <string>
 #include <fstream>
+#include <stdexcept>
+#include <memory>
+#include <functional>
 
 #include <glad/glad.h>
 
@@ -14,7 +18,7 @@
 
 #include "Window.h"
 #include "Camera.h"
-#include "Input.h"
+#include "camera-control.h"
 #include "File.h"
 
 #include "Shader.h"

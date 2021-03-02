@@ -1,12 +1,16 @@
 #include "pch.h"
 
+Camera camera;
+CameraControl control(camera, 0.1f, 0.1f);
+
+void MouseInput(GLFWwindow* window, double x, double y)
+{
+    control.MouseMove((float)x, (float)y);
+}
+
 int main()
 {
-    if (Window::initWindow("OpenGL", 800, 600) != 0)
-    {
-        return -1;
-    }
-
+    Window window("OpenGL", 800, 600);
     // Initialize GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -33,9 +37,6 @@ int main()
 
     // Light::lights.push_back(&flashLight);
 
-    Camera camera = Camera();
-    Input::setCamera(&camera, 3.0f, 0.1f);
-
     unsigned int textureId = Texture::loadTexture("res/chunk.png", GL_RGB);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureId);
@@ -48,47 +49,69 @@ int main()
     glEnable(GL_DEPTH_TEST);
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    glfwSetInputMode(Window::window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPosCallback(Window::window, Input::mouseInput);
+    glfwSetInputMode(window.window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(window.window(), MouseInput);
 
+    auto start_time = std::chrono::high_resolution_clock::now();
+    double delta_time = 0.0;
+    constexpr double time_step = 1000000000.0 / 60.0;
 
-    float deltaTime = 0.0f;
-    float lastTime = 0.0f;
-    float counter = 0.0f;
-    int fps = 0;
-    while (!glfwWindowShouldClose(Window::window))
+    auto update_timer = std::chrono::high_resolution_clock::now();
+    int update_counter = 0;
+    while (!glfwWindowShouldClose(window.window()))
     {
-        float now = (float)glfwGetTime();
-        deltaTime = now - lastTime;
-        lastTime = now;
+        auto now = std::chrono::high_resolution_clock::now();
+        delta_time += (double)std::chrono::duration_cast<std::chrono::nanoseconds>(now - start_time).count() / time_step;
+        start_time = now;
 
-        fps++;
-        counter += deltaTime;
-        if (counter >= 1)
+
+        bool should_update = delta_time >= 1;
+        while (delta_time >= 1)
         {
-            std::cout << fps << std::endl;
-            counter -= 1;
-            fps = 0;
+            // update
+            control.Update(
+                {
+                    glfwGetKey(window.window(), GLFW_KEY_W) == GLFW_PRESS,
+                    glfwGetKey(window.window(), GLFW_KEY_S) == GLFW_PRESS,
+                    glfwGetKey(window.window(), GLFW_KEY_D) == GLFW_PRESS,
+                    glfwGetKey(window.window(), GLFW_KEY_A) == GLFW_PRESS,
+                    glfwGetKey(window.window(), GLFW_KEY_SPACE) == GLFW_PRESS,
+                    glfwGetKey(window.window(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS
+                }
+            );
+            camera.update();
+
+            update_counter++;
+            delta_time--;
         }
 
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        if (should_update)
+        {
+            // render
+            glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        Input::keyInput(deltaTime);
+            window.GetSize();
+            glm::mat4 projection = glm::perspective(glm::radians(camera.fov),
+                (float)window.width() / (float)window.height(), 0.1f, 100.0f);
 
-        camera.update();
+            glm::mat4 pv = projection * camera.viewMatrix;
+
+            obj.render(&camera, pv);
+
+            glfwSwapBuffers(window.window());
+        }
+
+        if (std::chrono::duration_cast<std::chrono::nanoseconds>(now - update_timer).count() >= 1000000000)
+        {
+            std::cout << update_counter << std::endl;
+            update_counter = 0;
+            update_timer = now;
+        }
 
         // flashLight.setPosition(camera.position);
         // flashLight.setDirection(camera.front);
 
-        glm::mat4 projection = glm::perspective(glm::radians(camera.fov),
-            (float)Window::width / (float)Window::height, 0.1f, 100.0f);
-
-        glm::mat4 pv = projection * camera.viewMatrix;
-
-        obj.render(&camera, pv);
-
-        glfwSwapBuffers(Window::window);
         glfwPollEvents();
     }
 

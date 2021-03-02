@@ -2,6 +2,7 @@ bin/
 int/
 
 .vs/
-*.vcxproj.user
+.vscode/
 
+*.vcxproj.user
 UserMacro.props

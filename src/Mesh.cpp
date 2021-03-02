@@ -7,7 +7,7 @@ Mesh::Mesh(const std::vector<float> vertices)
 	glGenBuffers(1, &vbo_id_);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_id_);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
 	glBindVertexArray(vao_id_);
 	glEnableVertexAttribArray(0);
@@ -53,7 +53,7 @@ Mesh::~Mesh()
 		glDeleteBuffers(1, &ebo_id_);
 }
 
-void Mesh::render()
+void Mesh::Render()
 {
 	glBindVertexArray(vao_id_);
 	switch (type_)
